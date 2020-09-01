@@ -2,9 +2,12 @@
 using CMS.DataEngine;
 using CMS.EventLog;
 using CMS.Helpers;
+using CMS.SiteProvider;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -108,8 +111,18 @@ namespace Xperience.Zapier
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            var response = client.PostAsync(url, byteContent).Result;
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            var httpRequestMessage = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(url),
+                Headers = {
+                    { "Xperience-Domain", SiteContext.CurrentSite.DomainName }
+                },
+                Content = byteContent
+            };
+
+            var response = client.SendAsync(httpRequestMessage).Result;
+            if (response.StatusCode != HttpStatusCode.OK)
             {
                 var message = response.Content.ReadAsStringAsync().Result;
                 EventLogProvider.LogEvent("I", nameof(ZapierHelper), "POST", $"POST to {url} failed with the following message:<br/> {message}");
