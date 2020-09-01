@@ -95,7 +95,7 @@ namespace Xperience.Zapier
                 {
                     var thread = new CMSThread(() => {
                         var site = SiteInfoProvider.GetSiteInfo(Webhook.WebhookSiteID);
-                        ZapierHelper.SendPostToWebhook(Webhook.WebhookURL, site.DomainName, e.Object);
+                        ZapierHelper.SendPostToWebhook(Webhook.WebhookURL, site, e.Object);
                     });
                     thread.Start(false);
                 }
