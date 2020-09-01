@@ -27,9 +27,9 @@ namespace Xperience.Zapier
         /// Type information.
         /// </summary>
 #warning "You will need to configure the type info."
-        public static readonly ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(WebhookInfoProvider), OBJECT_TYPE, "Zapier.Webhook", "WebhookID", "WebhookLastModified", "WebhookGuid", "WebhookID", "WebhookName", null, null, null, null)
+        public static readonly ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(WebhookInfoProvider), OBJECT_TYPE, "Zapier.Webhook", "WebhookID", "WebhookLastModified", "WebhookGuid", "WebhookID", "WebhookName", null, "WebhookSiteID", null, null)
         {
-            ModuleName = "Zapier",
+            ModuleName = "Xperience.Zapier",
             TouchCacheDependencies = true,
         };
 
@@ -47,6 +47,23 @@ namespace Xperience.Zapier
             set
             {
                 SetValue("WebhookID", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Webhook site ID.
+        /// </summary>
+        [DatabaseField]
+        public virtual int WebhookSiteID
+        {
+            get
+            {
+                return ValidationHelper.GetInteger(GetValue("WebhookSiteID"), 0);
+            }
+            set
+            {
+                SetValue("WebhookSiteID", value, 0);
             }
         }
 

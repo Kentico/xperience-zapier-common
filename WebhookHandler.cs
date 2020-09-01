@@ -1,6 +1,7 @@
 ﻿using CMS.Base;
 using CMS.DataEngine;
 using CMS.EventLog;
+using CMS.SiteProvider;
 
 namespace Xperience.Zapier
 {
@@ -93,7 +94,8 @@ namespace Xperience.Zapier
                 if (e.Object != null)
                 {
                     var thread = new CMSThread(() => {
-                        ZapierHelper.SendPostToWebhook(Webhook.WebhookURL, e.Object);
+                        var site = SiteInfoProvider.GetSiteInfo(Webhook.WebhookSiteID);
+                        ZapierHelper.SendPostToWebhook(Webhook.WebhookURL, site.DomainName, e.Object);
                     });
                     thread.Start(false);
                 }

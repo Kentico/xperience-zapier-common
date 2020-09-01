@@ -87,20 +87,20 @@ namespace Xperience.Zapier
             return WebhookEventTypeEnum.None;
         }
 
-        public static bool SendPostToWebhook(string url, BaseInfo data)
+        public static bool SendPostToWebhook(string url, string siteDomain, BaseInfo data)
         {
-            return DoPost(url, data.ToZapierString());
+            return DoPost(url, siteDomain, data.ToZapierString());
         }
 
-        public static bool SendPostToWebhook(string url, IEnumerable<BaseInfo> data)
+        public static bool SendPostToWebhook(string url, string siteDomain, IEnumerable<BaseInfo> data)
         {
             var content = data.Select(b => b.ToZapierObject());
             var json = JsonConvert.SerializeObject(content);
 
-            return DoPost(url, json);
+            return DoPost(url, siteDomain, json);
         }
 
-        private static bool DoPost(string url, string content)
+        private static bool DoPost(string url, string siteDomain, string content)
         {
             if (DataHelper.IsEmpty(url))
             {
@@ -116,7 +116,7 @@ namespace Xperience.Zapier
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(url),
                 Headers = {
-                    { "Xperience-Domain", SiteContext.CurrentSite.DomainName }
+                    { "Xperience-Domain", siteDomain }
                 },
                 Content = byteContent
             };
