@@ -1,8 +1,6 @@
 ﻿using CMS.Core;
 using CMS.DataEngine;
-using CMS.EventLog;
 using CMS.Helpers;
-using CMS.SiteProvider;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,8 +13,22 @@ namespace Xperience.Zapier
 {
     public class ZapierHelper
     {
+        private static IEventLogService mLogService;
         private static readonly HttpClient client = new HttpClient();
         protected static List<WebhookHandler> mHandlers = new List<WebhookHandler>();
+
+        public static IEventLogService LogService
+        {
+            get
+            {
+                if (mLogService == null)
+                {
+                    mLogService = Service.Resolve<IEventLogService>();
+                }
+
+                return mLogService;
+            }
+        }
 
         public static void RegisterWebhook(int id, bool logTask = false)
         {
@@ -87,20 +99,20 @@ namespace Xperience.Zapier
             return WebhookEventTypeEnum.None;
         }
 
-        public static bool SendPostToWebhook(string url, SiteInfo site, BaseInfo data)
+        public static bool SendPostToWebhook(string url, BaseInfo data)
         {
-            return DoPost(url, site, data.ToZapierString());
+            return DoPost(url, data.ToZapierString());
         }
 
-        public static bool SendPostToWebhook(string url, SiteInfo site, IEnumerable<BaseInfo> data)
+        public static bool SendPostToWebhook(string url, IEnumerable<BaseInfo> data)
         {
             var content = data.Select(b => b.ToZapierObject());
             var json = JsonConvert.SerializeObject(content);
 
-            return DoPost(url, site, json);
+            return DoPost(url, json);
         }
 
-        private static bool DoPost(string url, SiteInfo site, string content)
+        private static bool DoPost(string url, string content)
         {
             if (DataHelper.IsEmpty(url))
             {
@@ -111,16 +123,11 @@ namespace Xperience.Zapier
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            List<string> aliases = site.SiteDomainAliases.Keys.Cast<string>().ToList();
-            string domains = $"{site.DomainName};{string.Join(";", aliases)}";
 
             var httpRequestMessage = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(url),
-                Headers = {
-                    { "Xperience-Domain", domains }
-                },
                 Content = byteContent
             };
 
@@ -128,7 +135,7 @@ namespace Xperience.Zapier
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 var message = response.Content.ReadAsStringAsync().Result;
-                EventLogProvider.LogEvent("I", nameof(ZapierHelper), "POST", $"POST to {url} failed with the following message:<br/> {message}");
+                LogService.LogEvent(EventTypeEnum.Information, nameof(ZapierHelper), "POST", $"POST to {url} failed with the following message:<br/> {message}");
                 return false;
             }
 

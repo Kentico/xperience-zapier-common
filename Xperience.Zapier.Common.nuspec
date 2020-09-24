@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Xperience.Zapier.Common</id>
-    <version>0.1.8</version>
+    <version>0.1.9</version>
     <title>Xperience.Zapier.Common</title>
     <authors>Eric Dugre</authors>
     <owners>$author$</owners>
