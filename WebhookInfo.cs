@@ -26,9 +26,9 @@ namespace Xperience.Zapier
         /// <summary>
         /// Type information.
         /// </summary>
-#warning "You will need to configure the type info."
         public static readonly ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(WebhookInfoProvider), OBJECT_TYPE, "Zapier.Webhook", "WebhookID", "WebhookLastModified", "WebhookGuid", "WebhookID", "WebhookName", null, "WebhookSiteID", null, null)
         {
+            CodeNameColumn = "WebhookName",
             ModuleName = "Xperience.Zapier",
             TouchCacheDependencies = true,
         };
