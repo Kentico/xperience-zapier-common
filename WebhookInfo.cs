@@ -15,7 +15,7 @@ namespace Xperience.Zapier
     /// Data container class for <see cref="WebhookInfo"/>.
     /// </summary>
     [Serializable]
-    public partial class WebhookInfo : AbstractInfo<WebhookInfo>
+    public partial class WebhookInfo : AbstractInfo<WebhookInfo, IWebhookInfoProvider>
     {
         /// <summary>
         /// Object type.
@@ -26,9 +26,8 @@ namespace Xperience.Zapier
         /// <summary>
         /// Type information.
         /// </summary>
-        public static readonly ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(WebhookInfoProvider), OBJECT_TYPE, "Zapier.Webhook", "WebhookID", "WebhookLastModified", "WebhookGuid", "WebhookID", "WebhookName", null, "WebhookSiteID", null, null)
+        public static readonly ObjectTypeInfo TYPEINFO = new ObjectTypeInfo(typeof(WebhookInfoProvider), OBJECT_TYPE, "Zapier.Webhook", "WebhookID", "WebhookLastModified", "WebhookGuid", "WebhookName", "WebhookName", null, "WebhookSiteID", null, null)
         {
-            CodeNameColumn = "WebhookName",
             ModuleName = "Xperience.Zapier",
             TouchCacheDependencies = true,
         };
@@ -47,6 +46,23 @@ namespace Xperience.Zapier
             set
             {
                 SetValue("WebhookID", value);
+            }
+        }
+
+
+        /// <summary>
+        /// Webhook created manually.
+        /// </summary>
+        [DatabaseField]
+        public virtual bool WebhookCreatedManually
+        {
+            get
+            {
+                return ValidationHelper.GetBoolean(GetValue("WebhookCreatedManually"), true);
+            }
+            set
+            {
+                SetValue("WebhookCreatedManually", value);
             }
         }
 
@@ -192,7 +208,7 @@ namespace Xperience.Zapier
         /// </summary>
         protected override void DeleteObject()
         {
-            WebhookInfoProvider.DeleteWebhookInfo(this);
+            Provider.Delete(this);
         }
 
 
@@ -201,7 +217,7 @@ namespace Xperience.Zapier
         /// </summary>
         protected override void SetObject()
         {
-            WebhookInfoProvider.SetWebhookInfo(this);
+            Provider.Set(this);
         }
 
 
