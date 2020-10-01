@@ -32,7 +32,7 @@ namespace Xperience.Zapier
 
         public static void RegisterWebhook(int id, bool logTask = false)
         {
-            var webhook = WebhookInfoProvider.GetWebhookInfo(id);
+            var webhook = WebhookInfoProvider.ProviderObject.Get(id);
             if (webhook != null) RegisterWebhook(webhook, logTask);
         }
 
@@ -59,7 +59,7 @@ namespace Xperience.Zapier
 
         public static void UnregisterWebhook(int id, bool logTask = false)
         {
-            var webhook = WebhookInfoProvider.GetWebhookInfo(id);
+            var webhook = WebhookInfoProvider.ProviderObject.Get(id);
             if (webhook != null) UnregisterWebhook(webhook, logTask);
         }
 

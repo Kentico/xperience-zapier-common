@@ -5,3 +5,4 @@ packages
 nuget.exe
 *.sln
 *.nupkg
+*.user
