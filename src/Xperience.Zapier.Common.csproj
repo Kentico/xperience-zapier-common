@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	<RootNamespace>Xperience.Zapier.Common</RootNamespace>
+	<LangVersion>Latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+	<Title>Xperience Zapier</Title>
+	<PackageId>Xperience.Zapier.Common</PackageId>
+	<Version>1.0.0</Version>
+	<Authors>Kentico Software</Authors>
+	<Company>Kentico Software</Company>
+	<PackageIcon>icon.png</PackageIcon>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageTags></PackageTags>
+	<Description></Description>
+	<RepositoryUrl>https://github.com/kentico/xperience-zapier-common</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Admin\**" />
+    <EmbeddedResource Remove="Admin\**" />
+    <None Remove="Admin\**" />
+	<None Include="..\img\icon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Kentico.Xperience.Libraries" Version="13.0.83" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Xperience.Zapier.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Xperience.Zapier.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Xperience.Zapier.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Xperience.Zapier.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

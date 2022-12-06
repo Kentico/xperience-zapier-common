@@ -1,39 +1,53 @@
-﻿using CMS;
+﻿using System;
+
+using CMS;
 using CMS.Base;
+using CMS.Core;
 using CMS.DataEngine;
 using CMS.Helpers;
-using System;
 
-[assembly: RegisterModule(typeof(Xperience.Zapier.ZapierModule))]
-namespace Xperience.Zapier
+using Xperience.Zapier.Common;
+
+[assembly: AssemblyDiscoverable]
+[assembly: RegisterModule(typeof(ZapierModule))]
+namespace Xperience.Zapier.Common
 {
     public class ZapierModule : Module
     {
+        private IWebhookHandlerRegister webhookHandlerRegister;
+
+
         public ZapierModule() : base(nameof(ZapierModule))
         {
-
         }
+
 
         protected override void OnInit()
         {
             base.OnInit();
 
+            webhookHandlerRegister = Service.Resolve<IWebhookHandlerRegister>();
+
             WebFarmHelper.RegisterTask<RegisterWebhookWebFarmTask>();
             WebFarmHelper.RegisterTask<UnregisterWebhookWebFarmTask>();
+
             ApplicationEvents.PostStart.Execute += RegisterExistingWebhooks;
+
             WebhookInfo.TYPEINFO.Events.Insert.After += RegisterNewWebhook;
             WebhookInfo.TYPEINFO.Events.Update.Before += CheckEnabledChange;
             WebhookInfo.TYPEINFO.Events.Delete.After += RemoveWebhook;
         }
+
 
         private void RegisterExistingWebhooks(object sender, EventArgs e)
         {
             var webhooks = WebhookInfoProvider.ProviderObject.Get().TypedResult;
             foreach (var webhook in webhooks)
             {
-                ZapierHelper.RegisterWebhook(webhook, true);
+                webhookHandlerRegister.RegisterWebhook(webhook, true);
             }
         }
+
 
         private void CheckEnabledChange(object sender, ObjectEventArgs e)
         {
@@ -43,26 +57,28 @@ namespace Xperience.Zapier
                 if (webhook.WebhookEnabled)
                 {
                     // Webhook changed from disabled to enabled
-                    ZapierHelper.RegisterWebhook(webhook, true);
+                    webhookHandlerRegister.RegisterWebhook(webhook, true);
                 }
                 else
                 {
                     // Webhook changed from enabled to disabled
-                    ZapierHelper.UnregisterWebhook(webhook, true);
+                    webhookHandlerRegister.UnregisterWebhook(webhook, true);
                 }
             }
         }
 
+
         private void RemoveWebhook(object sender, ObjectEventArgs e)
         {
             var webhook = e.Object as WebhookInfo;
-            ZapierHelper.UnregisterWebhook(webhook, true);
+            webhookHandlerRegister.UnregisterWebhook(webhook, true);
         }
+
 
         private void RegisterNewWebhook(object sender, ObjectEventArgs e)
         {
             var webhook = e.Object as WebhookInfo;
-            ZapierHelper.RegisterWebhook(webhook, true);
+            webhookHandlerRegister.RegisterWebhook(webhook, true);
         }
     }
 }

@@ -1,6 +1,6 @@
 using CMS.DataEngine;
 
-namespace Xperience.Zapier
+namespace Xperience.Zapier.Common
 {
     /// <summary>
     /// Declares members for <see cref="WebhookInfo"/> management.

@@ -1,10 +1,16 @@
-﻿namespace Xperience.Zapier
+﻿namespace Xperience.Zapier.Common
 {
-    public enum WebhookEventTypeEnum
+    public enum WebhookEventType
     {
         None = -1,
+
+
         Create = 0,
+
+
         Update = 1,
+
+
         Delete = 2
     }
 }

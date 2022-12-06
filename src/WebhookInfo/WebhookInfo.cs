@@ -5,11 +5,12 @@ using System.Runtime.Serialization;
 using CMS;
 using CMS.DataEngine;
 using CMS.Helpers;
-using Xperience.Zapier;
+
+using Xperience.Zapier.Common;
 
 [assembly: RegisterObjectType(typeof(WebhookInfo), WebhookInfo.OBJECT_TYPE)]
 
-namespace Xperience.Zapier
+namespace Xperience.Zapier.Common
 {
     /// <summary>
     /// Data container class for <see cref="WebhookInfo"/>.
