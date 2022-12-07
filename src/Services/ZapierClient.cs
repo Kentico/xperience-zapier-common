@@ -17,22 +17,29 @@ using Xperience.Zapier.Common;
 [assembly: RegisterImplementation(typeof(IZapierClient), typeof(ZapierClient), Priority = RegistrationPriority.SystemDefault)]
 namespace Xperience.Zapier.Common
 {
+    /// <summary>
+    /// Default implementation of <see cref="IZapierClient"/>.
+    /// </summary>
     internal class ZapierClient : IZapierClient
     {
         private readonly HttpClient httpClient;
 
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public ZapierClient(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }
 
 
-        public Task TriggerWebhook(string url, params BaseInfo[] data)
+        /// <inheritdoc/>
+        public Task TriggerWebhook(string webhookUrl, params BaseInfo[] data)
         {
-            if (String.IsNullOrEmpty(url))
+            if (String.IsNullOrEmpty(webhookUrl))
             {
-                throw new ArgumentNullException(nameof(url));
+                throw new ArgumentNullException(nameof(webhookUrl));
             }
 
             if (data == null || !data.Any())
@@ -43,11 +50,11 @@ namespace Xperience.Zapier.Common
             var content = data.Where(info => info != null).Select(info => info.ToZapierObject());
             var json = JsonConvert.SerializeObject(content);
 
-            return DoPost(url, json);
+            return DoPost(webhookUrl, json);
         }
 
 
-        private async Task DoPost(string url, string content)
+        private async Task DoPost(string webhookUrl, string content)
         {
             var buffer = Encoding.UTF8.GetBytes(content);
             var byteContent = new ByteArrayContent(buffer);
@@ -56,7 +63,7 @@ namespace Xperience.Zapier.Common
             var httpRequestMessage = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri(url),
+                RequestUri = new Uri(webhookUrl),
                 Content = byteContent
             };
 
@@ -64,7 +71,7 @@ namespace Xperience.Zapier.Common
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 var message = await response.Content.ReadAsStringAsync();
-                throw new InvalidOperationException($"POST to {url} failed with the following message:<br/>{message}");
+                throw new InvalidOperationException($"POST to {webhookUrl} failed with the following message:<br/>{message}");
             }
         }
     }

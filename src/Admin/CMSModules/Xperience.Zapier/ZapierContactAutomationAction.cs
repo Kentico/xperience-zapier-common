@@ -12,8 +12,13 @@ using CMS.Helpers;
 
 namespace Xperience.Zapier.Common
 {
+    /// <summary>
+    /// Marketing automation action which triggers a Zapier webhook with the processes <see cref="ContactInfo"/> and the
+    /// activity which triggered the automation process.
+    /// </summary>
     public class ZapierContactAutomationAction : ContactAutomationAction
     {
+        /// <inheritdoc/>
         public override void Execute()
         {
             var url = GetResolvedParameter("WebhookURL", String.Empty);

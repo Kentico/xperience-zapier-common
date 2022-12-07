@@ -10,6 +10,9 @@ using Xperience.Zapier.Common;
 [assembly: RegisterImplementation(typeof(IWebhookHandlerRegister), typeof(WebhookHandlerRegister), Priority = RegistrationPriority.SystemDefault)]
 namespace Xperience.Zapier.Common
 {
+    /// <summary>
+    /// Default implementation of <see cref="IWebhookHandlerRegister"/>.
+    /// </summary>
     internal class WebhookHandlerRegister : IWebhookHandlerRegister
     {
         private readonly IWebFarmService webFarmService;
@@ -17,6 +20,9 @@ namespace Xperience.Zapier.Common
         private readonly List<WebhookHandler> registeredHandlers = new();
 
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public WebhookHandlerRegister(IWebFarmService webFarmService, IWebhookInfoProvider webhookInfoProvider)
         {
             this.webFarmService = webFarmService;
@@ -24,6 +30,7 @@ namespace Xperience.Zapier.Common
         }
 
 
+        /// <inheritdoc/>
         public void RegisterWebhook(int id, bool logTask = false)
         {
             if (id <= 0)
@@ -41,6 +48,7 @@ namespace Xperience.Zapier.Common
         }
 
 
+        /// <inheritdoc/>
         public void RegisterWebhook(WebhookInfo webhook, bool logTask = false)
         {
             if (webhook == null)
@@ -66,6 +74,7 @@ namespace Xperience.Zapier.Common
         }
 
 
+        /// <inheritdoc/>
         public void UnregisterWebhook(int id, bool logTask = false)
         {
             if (id <= 0)
@@ -83,6 +92,7 @@ namespace Xperience.Zapier.Common
         }
 
 
+        /// <inheritdoc/>
         public void UnregisterWebhook(WebhookInfo webhook, bool logTask = false)
         {
             if (webhook == null)

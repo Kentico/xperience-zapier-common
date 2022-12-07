@@ -8,6 +8,9 @@ using Xperience.Zapier.Common;
 
 namespace Xperience.Zapier
 {
+    /// <summary>
+    /// Page worklfow action which triggers a Zapier webhook with the page data.
+    /// </summary>
     public class ZapierWorkflowAction : DocumentWorkflowAction
     {
         public override void Execute()

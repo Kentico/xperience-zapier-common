@@ -8,8 +8,12 @@ using Xperience.Zapier.Common;
 [assembly: RegisterCustomClass(nameof(WebhookListingExtender), typeof(WebhookListingExtender))]
 namespace Xperience.Zapier.Common
 {
+    /// <summary>
+    /// UniGrid extender for the Zapier webhook listing page.
+    /// </summary>
     public class WebhookListingExtender : ControlExtender<UniGrid>
     {
+        /// <inheritdoc/>
         public override void OnInit()
         {
             Control.OnExternalDataBound += Control_OnExternalDataBound;

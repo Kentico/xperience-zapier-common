@@ -33,19 +33,4 @@
     <PackageReference Include="Kentico.Xperience.Libraries" Version="13.0.83" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Resources\Xperience.Zapier.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Xperience.Zapier.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Xperience.Zapier.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Xperience.Zapier.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
 </Project>

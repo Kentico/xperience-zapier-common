@@ -12,16 +12,23 @@ using Xperience.Zapier.Common;
 [assembly: RegisterModule(typeof(ZapierModule))]
 namespace Xperience.Zapier.Common
 {
+    /// <summary>
+    /// Custom module which initializes the Zapier integration.
+    /// </summary>
     public class ZapierModule : Module
     {
         private IWebhookHandlerRegister webhookHandlerRegister;
 
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public ZapierModule() : base(nameof(ZapierModule))
         {
         }
 
 
+        /// <inheritdoc/>
         protected override void OnInit()
         {
             base.OnInit();
