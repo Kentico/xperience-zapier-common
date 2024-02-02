@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kentico.Xperience.Libraries" Version="13.0.0" />
+    <PackageReference Include="Kentico.Xperience.Libraries" Version="13.0.137" />
   </ItemGroup>
 
   <ItemGroup>
